@@ -7,11 +7,21 @@ import java.util.List;
  * @author clark
  * May 23, 2018 10:48:16 AM
  */
-public class TransferParamEntity<T,V> {
+public class TransferParamEntity<T,V,M> {
 	private V sender;
 	private String memo;
 	private T receiver;
 	private ChainType type;
+    private String payload;
+
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
 
     public V getSender() {
         return sender;

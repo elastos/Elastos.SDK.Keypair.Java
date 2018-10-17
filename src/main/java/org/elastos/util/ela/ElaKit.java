@@ -11,7 +11,9 @@ import net.sf.json.JSONObject;
 import org.elastos.api.Basic;
 import org.elastos.common.ErrorCode;
 import org.elastos.ela.*;
+import org.elastos.util.JsonUtil;
 
+import javax.xml.bind.DatatypeConverter;
 import java.util.LinkedHashMap;
 
 /**
@@ -29,7 +31,14 @@ public class ElaKit {
             JSONArray outputs = json_transaction.getJSONArray("Outputs");
             UTXOTxInput[] utxoTxInputs = (UTXOTxInput[])Basic.parseInputs(utxoInputs).toArray(new UTXOTxInput[utxoInputs.size()]);
             TxOutput[] txOutputs = (TxOutput[])Basic.parseOutputs(outputs).toArray(new TxOutput[outputs.size()]);
-            PayloadRecord payload = Basic.parsePayloadRecord(json_transaction);
+            PayloadRegisterIdentification payload = null;
+            if(json_transaction.has("Payload")){
+                payload = JsonUtil.jsonStr2Entity(json_transaction.getString("Payload"),PayloadRegisterIdentification.class);
+                String privKey = payload.getIdPrivKey();
+                String address = Ela.getAddressFromPrivate(privKey);
+                String programHash = DatatypeConverter.printHexBinary(Util.ToScriptHash(address));
+                payload.setProgramHash(programHash);
+            }
             boolean bool = json_transaction.has("Memo");
             LinkedHashMap<String, Object> resultMap = new LinkedHashMap();
             new RawTx("", "");
