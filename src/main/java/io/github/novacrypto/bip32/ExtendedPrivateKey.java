@@ -38,7 +38,7 @@ import static io.github.novacrypto.bip32.ByteArrayWriter.head32;
 import static io.github.novacrypto.bip32.ByteArrayWriter.tail32;
 import static io.github.novacrypto.bip32.HmacSha512.hmacSha512;
 import static io.github.novacrypto.bip32.Index.isHardened;
-import static io.github.novacrypto.bip32.Secp256k1SC.n;
+import static io.github.novacrypto.bip32.Secp256r1SC.n;
 import static io.github.novacrypto.bip32.derivation.CkdFunctionResultCacheDecorator.newCacheOf;
 import static io.github.novacrypto.toruntime.CheckedExceptionToRuntime.toRuntime;
 
@@ -72,13 +72,13 @@ public final class ExtendedPrivateKey implements
 
     private ExtendedPrivateKey(final Network network, final byte[] key, final byte[] chainCode) {
         this(new HdKey.Builder()
-                .network(network)
-                .neutered(false)
+//                .network(network)
+//                .neutered(false)
                 .key(key)
                 .chainCode(chainCode)
-                .depth(0)
-                .childNumber(0)
-                .parentFingerprint(0)
+//                .depth(0)
+//                .childNumber(0)
+//                .parentFingerprint(0)
                 .build());
     }
 
@@ -88,10 +88,8 @@ public final class ExtendedPrivateKey implements
 
     public static ExtendedPrivateKey fromSeed(final byte[] seed, final Network network) {
         final byte[] I = hmacSha512(BITCOIN_SEED, seed);
-
         final byte[] Il = head32(I);
         final byte[] Ir = tail32(I);
-
         return new ExtendedPrivateKey(network, Il, Ir);
     }
 
@@ -113,17 +111,21 @@ public final class ExtendedPrivateKey implements
         return DatatypeConverter.printHexBinary(hdKey.getKey());
     }
 
+    public String getChainCode(){
+        return DatatypeConverter.printHexBinary(hdKey.getChainCode());
+    }
+
     public byte[] getKey(){
         return hdKey.getKey();
     }
 
     @Override
     public ExtendedPrivateKey toNetwork(final Network otherNetwork) {
-        if (otherNetwork == network())
-            return this;
+//        if (otherNetwork == network())
+//            return this;
         return new ExtendedPrivateKey(
                 hdKey.toBuilder()
-                        .network(otherNetwork)
+//                        .network(otherNetwork)
                         .build());
     }
 
@@ -133,7 +135,7 @@ public final class ExtendedPrivateKey implements
     }
 
     @Override
-    public ExtendedPrivateKey cKDpriv(final int index) {
+    public ExtendedPrivateKey cKDpriv(final int index ) {
         final byte[] data = new byte[37];
         final ByteArrayWriter writer = new ByteArrayWriter(data);
 
@@ -162,13 +164,13 @@ public final class ExtendedPrivateKey implements
         ser256(Il, ki);
 
         return new ExtendedPrivateKey(new HdKey.Builder()
-                .network(hdKey.getNetwork())
-                .neutered(false)
+//                .network(hdKey.getNetwork())
+//                .neutered(false)
                 .key(Il)
                 .chainCode(Ir)
-                .depth(hdKey.depth() + 1)
+//                .depth(hdKey.depth() + 1)
                 .childNumber(index)
-                .parentFingerprint(hdKey.calculateFingerPrint())
+//                .parentFingerprint(hdKey.calculateFingerPrint())
                 .build());
     }
 
@@ -204,11 +206,10 @@ public final class ExtendedPrivateKey implements
     }
 
     @Override
-    public Network network() {
-        return hdKey.getNetwork();
-    }
+//    public Network network() {
+//        return hdKey.getNetwork();
+//    }
 
-    @Override
     public int depth() {
         return hdKey.depth();
     }

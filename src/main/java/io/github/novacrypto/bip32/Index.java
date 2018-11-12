@@ -33,4 +33,5 @@ public final class Index {
     public static boolean isHardened(final int i) {
         return (i & 0x80000000) != 0;
     }
+
 }

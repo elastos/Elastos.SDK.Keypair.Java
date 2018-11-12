@@ -36,7 +36,7 @@ import static io.github.novacrypto.bip32.ByteArrayWriter.head32;
 import static io.github.novacrypto.bip32.ByteArrayWriter.tail32;
 import static io.github.novacrypto.bip32.HmacSha512.hmacSha512;
 import static io.github.novacrypto.bip32.Index.isHardened;
-import static io.github.novacrypto.bip32.Secp256k1SC.*;
+import static io.github.novacrypto.bip32.Secp256r1SC.*;
 import static io.github.novacrypto.bip32.derivation.CkdFunctionResultCacheDecorator.newCacheOf;
 import static io.github.novacrypto.hashing.Hash160.hash160into;
 import static io.github.novacrypto.hashing.Sha256.sha256Twice;
@@ -70,7 +70,7 @@ public final class ExtendedPublicKey implements
 
     static ExtendedPublicKey from(final HdKey hdKey) {
         return new ExtendedPublicKey(new HdKey.Builder()
-                .network(hdKey.getNetwork())
+//                .network(hdKey.getNetwork())
                 .neutered(true)
                 .key(hdKey.getPoint())
                 .parentFingerprint(hdKey.getParentFingerprint())
@@ -113,7 +113,7 @@ public final class ExtendedPublicKey implements
         final byte[] key = pointSerP(ki);
 
         return new ExtendedPublicKey(new HdKey.Builder()
-                .network(parent.getNetwork())
+//                .network(parent.getNetwork())
                 .neutered(true)
                 .depth(parent.depth() + 1)
                 .parentFingerprint(parent.calculateFingerPrint())
@@ -130,11 +130,11 @@ public final class ExtendedPublicKey implements
 
     @Override
     public ExtendedPublicKey toNetwork(final Network otherNetwork) {
-        if (otherNetwork == network())
-            return this;
+//        if (otherNetwork == network())
+//            return this;
         return new ExtendedPublicKey(
                 hdKey.toBuilder()
-                        .network(otherNetwork)
+//                        .network(otherNetwork)
                         .build());
     }
 
@@ -143,16 +143,16 @@ public final class ExtendedPublicKey implements
         return base58Encode(extendedKeyByteArray());
     }
 
-    public String p2pkhAddress() {
-        return encodeAddress(hdKey.getNetwork().p2pkhVersion(), hdKey.getKey());
-    }
+//    public String p2pkhAddress() {
+//        return encodeAddress(hdKey.getNetwork().p2pkhVersion(), hdKey.getKey());
+//    }
 
-    public String p2shAddress() {
-        final byte[] script = new byte[22];
-        script[1] = (byte) 20;
-        hash160into(script, 2, hdKey.getKey());
-        return encodeAddress(hdKey.getNetwork().p2shVersion(), script);
-    }
+//    public String p2shAddress() {
+//        final byte[] script = new byte[22];
+//        script[1] = (byte) 20;
+//        hash160into(script, 2, hdKey.getKey());
+//        return encodeAddress(hdKey.getNetwork().p2shVersion(), script);
+//    }
 
     private static String encodeAddress(final byte version, final byte[] data) {
         final byte[] address = new byte[25];
@@ -184,10 +184,10 @@ public final class ExtendedPublicKey implements
         return new CkdFunctionDerive<>(ckdFunction, this);
     }
 
-    @Override
-    public Network network() {
-        return hdKey.getNetwork();
-    }
+//    @Override
+//    public Network network() {
+//        return hdKey.getNetwork();
+//    }
 
     @Override
     public int depth() {

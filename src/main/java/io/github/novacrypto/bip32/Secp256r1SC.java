@@ -27,9 +27,9 @@ import org.spongycastle.math.ec.ECPoint;
 
 import java.math.BigInteger;
 
-final class Secp256k1SC {
+final class Secp256r1SC {
 
-    static final X9ECParameters CURVE = CustomNamedCurves.getByName("secp256k1");
+    static final X9ECParameters CURVE = CustomNamedCurves.getByName("secp256r1");
 
     static BigInteger n() {
         return CURVE.getN();

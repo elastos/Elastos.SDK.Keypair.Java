@@ -6,7 +6,7 @@
 
   <groupId>org.elastos</groupId>
   <artifactId>wallet.lib</artifactId>
-  <version>0.0.2</version>
+  <version>0.0.4</version>
 
   <name>wallet.lib</name>
   <description>wallet library</description>
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>org.elastos.ela</groupId>
       <artifactId>ela_tool</artifactId>
-      <version>0.0.3</version>
+      <version>0.0.5</version>
     </dependency>
     <dependency>
       <groupId>com.google.code.gson</groupId>

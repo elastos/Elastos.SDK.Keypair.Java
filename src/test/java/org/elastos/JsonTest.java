@@ -9,6 +9,7 @@ package org.elastos;
 import org.elastos.ela.Ela;
 import org.elastos.ela.PayloadRegisterIdentification;
 import org.elastos.ela.Util;
+import org.elastos.ela.bitcoinj.Base58;
 import org.elastos.util.JsonUtil;
 import org.junit.Test;
 
@@ -61,7 +62,16 @@ public class JsonTest {
     @Test
     public void test03(){
 
+        byte str[] = "hellowolrdhellowolrd1".getBytes();
 
+        byte str1[] = new byte[str.length + 4];
+
+        System.arraycopy(str,0,str1,0,str.length);
+
+        System.arraycopy(str,0 ,str1,str.length,4);
+
+        System.out.println(Base58.encode(str1));
+        System.out.println(Base58.encode(str));
 
     }
 }

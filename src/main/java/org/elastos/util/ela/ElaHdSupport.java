@@ -6,36 +6,24 @@
  */
 package org.elastos.util.ela;
 
-import io.github.novacrypto.base58.Base58;
 import io.github.novacrypto.bip32.ExtendedPrivateKey;
-import io.github.novacrypto.bip32.networks.Bitcoin;
 import io.github.novacrypto.bip44.AddressIndex;
 import io.github.novacrypto.bip44.BIP44;
 import io.github.novacrypto.bip44.Change;
 import io.github.novacrypto.hashing.Sha256;
 import io.github.novacrypto.toruntime.CheckedExceptionToRuntime;
 import org.apache.commons.codec.binary.Hex;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Utils;
-import org.bouncycastle.crypto.digests.RIPEMD160Digest;
 import org.elastos.ela.Ela;
 import org.web3j.crypto.CipherException;
-import org.web3j.crypto.ECKeyPair;
-import org.web3j.crypto.Keys;
-import org.web3j.crypto.WalletFile;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import javax.xml.bind.DatatypeConverter;
 import java.io.*;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static io.github.novacrypto.toruntime.CheckedExceptionToRuntime.toRuntime;
@@ -125,7 +113,7 @@ public class ElaHdSupport {
 
     public static String generate(String mnemonic,int index) throws InvalidKeySpecException, NoSuchAlgorithmException, CipherException {
         String seed = getSeed(mnemonic, SALT);
-        ExtendedPrivateKey rootKey = ExtendedPrivateKey.fromSeed(hexStringToByteArray(seed), Bitcoin.MAIN_NET);
+        ExtendedPrivateKey rootKey = ExtendedPrivateKey.fromSeed(hexStringToByteArray(seed),null);
         AddressIndex addressIndex = acctType.address(index);
         ExtendedPrivateKey childPrivateKey = rootKey.derive(addressIndex, AddressIndex.DERIVATION);
         return  genAddress(childPrivateKey);
@@ -138,6 +126,8 @@ public class ElaHdSupport {
      */
     private static String genAddress(ExtendedPrivateKey childPrivateKey) {
         String privateKey = childPrivateKey.getPrivKey();
+        String chainCode = childPrivateKey.getChainCode();
+        System.out.println("ChainCode :" + chainCode);
         String publicKey  = Ela.getPublicFromPrivate(privateKey);
         String publicAddr = Ela.getAddressFromPrivate(privateKey);
         return "{\"privateKey\":\""+privateKey+"\",\"publicKey\":\""+publicKey+"\",\"publicAddress\":\""+publicAddr+"\"}";
