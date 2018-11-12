@@ -126,8 +126,6 @@ public class ElaHdSupport {
      */
     private static String genAddress(ExtendedPrivateKey childPrivateKey) {
         String privateKey = childPrivateKey.getPrivKey();
-        String chainCode = childPrivateKey.getChainCode();
-        System.out.println("ChainCode :" + chainCode);
         String publicKey  = Ela.getPublicFromPrivate(privateKey);
         String publicAddr = Ela.getAddressFromPrivate(privateKey);
         return "{\"privateKey\":\""+privateKey+"\",\"publicKey\":\""+publicKey+"\",\"publicAddress\":\""+publicAddr+"\"}";
