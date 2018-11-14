@@ -6,7 +6,10 @@
  */
 package org.elastos;
 
+import io.github.novacrypto.bip32.Index;
+import org.elastos.ela.Ela;
 import org.elastos.entity.HdWalletEntity;
+import org.elastos.entity.MnemonicType;
 import org.elastos.util.JsonUtil;
 import org.elastos.util.ela.ElaHdSupport;
 import org.elastos.util.ela.ElaSignTool;
@@ -23,7 +26,8 @@ public class HdTest {
 
     @Test
     public void test01() throws Exception{
-        String mnemonic = ElaHdSupport.generateMnemonic();
+        String mnemonic = ElaHdSupport.generateMnemonic(MnemonicType.CHINESE);
+        System.out.println(mnemonic);
         String wallet   = ElaHdSupport.generate(mnemonic,0);
         String wallet1  = ElaHdSupport.generate(mnemonic,1);
         String wallet2  = ElaHdSupport.generate(mnemonic,2);
@@ -64,5 +68,10 @@ public class HdTest {
         String mnemonic = "obtain pill nest sample caution stone candy habit silk husband give net";
         String wallet = ElaHdSupport.generate(mnemonic,1);
         System.out.println(wallet);
+        String str = "AAAAAAAAAAB1131FE85FC597E6116E0E0C7B0F2ED299D991946C935DF567FE34";
+        String str1 = Ela.getPublicFromPrivate(str);
+        String str2 = Ela.getAddressFromPrivate(str);
+        System.out.println(str1 + " " +str2);
     }
+
 }

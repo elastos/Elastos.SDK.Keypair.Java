@@ -14,6 +14,7 @@ import io.github.novacrypto.hashing.Sha256;
 import io.github.novacrypto.toruntime.CheckedExceptionToRuntime;
 import org.apache.commons.codec.binary.Hex;
 import org.elastos.ela.Ela;
+import org.elastos.entity.MnemonicType;
 import org.web3j.crypto.CipherException;
 
 import javax.crypto.SecretKeyFactory;
@@ -54,7 +55,7 @@ public class ElaHdSupport {
         return randomDigits.toString();
     }
 
-    public static String generateMnemonic() {
+    public static String generateMnemonic(MnemonicType type) {
         String entropy = createEntropy();
         String encodeStr = "";
         byte[] hash = Sha256.sha256(hexStringToByteArray(entropy));
@@ -70,7 +71,11 @@ public class ElaHdSupport {
         for (int i = 0; i <= 11; i++) {
             segments[i] = bin_entropy.substring(i * 11, (i + 1) * 11);
         }
-        readTextFile();
+        if (type == MnemonicType.ENGLISH){
+            readTextFile("english");
+        }else if(type == MnemonicType.CHINESE){
+            readTextFile("chinese");
+        }
         String mnemonic = "";
         mnemonic += wordlist[Integer.valueOf(segments[0], 2)];
         for (int j = 1; j < segments.length; j++) {
@@ -88,10 +93,10 @@ public class ElaHdSupport {
         return null;
     }
 
-    private static void readTextFile() {
+    private static void readTextFile(String fileName) {
         try {
             String encoding = "utf-8";
-            InputStream is = ElaHdSupport.class.getClassLoader().getResourceAsStream("english");
+            InputStream is = ElaHdSupport.class.getClassLoader().getResourceAsStream(fileName);
             if (is != null) { //判断文件是否存在
                 InputStreamReader read = new InputStreamReader(
                         is, encoding);//考虑到编码格式
