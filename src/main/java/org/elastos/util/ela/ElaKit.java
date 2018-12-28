@@ -73,4 +73,20 @@ public class ElaKit {
         return Util.checkAddress(addr);
     }
 
+    /**
+     * get Identity address from public key
+     * @param publicKey
+     * @return
+     */
+    public static String getIdentityFromPublicKey(String publicKey) {
+
+        byte[] pub = DatatypeConverter.parseHexBinary(publicKey);
+
+        byte[] rs = Util.CreateSingleSignatureRedeemScript(pub,3);
+
+        byte[] ph = Util.ToCodeHash(rs,3);
+
+        return Util.ToAddress(ph);
+    }
+
 }
