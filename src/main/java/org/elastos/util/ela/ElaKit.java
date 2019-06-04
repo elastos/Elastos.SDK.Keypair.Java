@@ -24,13 +24,17 @@ import java.util.LinkedHashMap;
 public class ElaKit {
 
     public static String genRawTransaction(JSONObject inputsAddOutpus) {
+        return genRawTransaction(inputsAddOutpus,null);
+    }
+
+    public static String genRawTransaction(JSONObject inputsAddOutpus , String assetId) {
         try {
             JSONArray transaction = inputsAddOutpus.getJSONArray("Transactions");
             JSONObject json_transaction = (JSONObject)transaction.get(0);
             JSONArray utxoInputs = json_transaction.getJSONArray("UTXOInputs");
             JSONArray outputs = json_transaction.getJSONArray("Outputs");
             UTXOTxInput[] utxoTxInputs = (UTXOTxInput[])Basic.parseInputs(utxoInputs).toArray(new UTXOTxInput[utxoInputs.size()]);
-            TxOutput[] txOutputs = (TxOutput[])Basic.parseOutputs(outputs).toArray(new TxOutput[outputs.size()]);
+            TxOutput[] txOutputs = (TxOutput[])Basic.parseOutputs(outputs,assetId).toArray(new TxOutput[outputs.size()]);
             PayloadRegisterIdentification payload = null;
             if(json_transaction.has("Payload")){
                 payload = JsonUtil.jsonStr2Entity(json_transaction.getString("Payload"),PayloadRegisterIdentification.class);
