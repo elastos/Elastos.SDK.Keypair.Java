@@ -93,4 +93,20 @@ public class ElaKit {
         return Util.ToAddress(ph);
     }
 
+    /**
+     * get Identity address from public key
+     * @param publicKey
+     * @return
+     */
+    public static String getDposAddressFromPublicKey(String publicKey) {
+
+        byte[] pub = DatatypeConverter.parseHexBinary(publicKey);
+
+        byte[] rs = Util.CreateSingleSignatureRedeemScript(pub,1);
+
+        byte[] ph = Util.ToCodeHash(rs,5);
+
+        return Util.ToAddress(ph);
+    }
+
 }
